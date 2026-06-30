@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cubi Advantage · Propagation Engine</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;600&family=Courier+Prime:wght@400;700&display=swap');
+:root{
+  --bg:#000000;--phosphor:#00ff00;--amber:#ffb000;--dim-green:#00aa00;
+  --card:#f5f5dc;--punch:#000000;--panel:rgba(0,0,0,.98);--border:#00ff00;
+  --glow:rgba(0,255,0,.4);--ink:#00ff00
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#000;color:var(--phosphor);overflow-x:hidden}
+body{
+  background:
+    repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,0,.03) 2px,rgba(0,255,0,.03) 4px),
+    radial-gradient(ellipse at center,rgba(0,255,0,.05),transparent 70%),
+    #000;
+  font-family:'VT323','Courier Prime',monospace;font-size:18px;line-height:1.2;
+  animation:crt-flicker 0.15s infinite
+}
+@keyframes crt-flicker{
+  0%{opacity:0.97}
+  50%{opacity:1}
+  100%{opacity:0.98}
+}
+.container{max-width:1200px;margin:0 auto;padding:20px;position:relative;z-index:10}
+.container::before{
+  content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.15),rgba(0,0,0,.15) 1px,transparent 1px,transparent 2px);
+  z-index:1000;animation:scan-lines 8s linear infinite
+}
+@keyframes scan-lines{to{transform:translateY(4px)}}
+.header{
+  border:2px solid var(--phosphor);background:var(--panel);
+  padding:20px;margin-bottom:20px;position:relative;
+  box-shadow:0 0 20px var(--glow),inset 0 0 20px rgba(0,255,0,.1)
+}
+.header::after{
+  content:'SYSTEM/370';position:absolute;top:5px;right:10px;
+  font-size:12px;color:var(--dim-green);font-family:'IBM Plex Mono',monospace
+}
+h1{
+  font-family:'VT323',monospace;font-size:48px;font-weight:400;
+  color:var(--phosphor);letter-spacing:.1em;text-align:center;margin:0;
+  text-shadow:0 0 10px var(--glow);text-transform:uppercase
+}
+h1::before{content:'> ';}
+h1::after{content:' _';animation:cursor-blink 1s infinite}
+@keyframes cursor-blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.subtitle{
+  font-family:'IBM Plex Mono',monospace;font-size:14px;
+  color:var(--amber);text-align:center;margin:10px 0;letter-spacing:.2em;text-transform:uppercase;
+  text-shadow:0 0 5px rgba(255,176,0,.5)
+}
+.tagline{
+  font-family:'VT323',monospace;font-size:16px;color:var(--dim-green);
+  text-align:center;margin:10px 0;letter-spacing:.1em
+}
+.law{
+  font-size:14px;color:var(--phosphor);font-family:'IBM Plex Mono',monospace;
+  text-align:center;padding:12px;background:rgba(0,255,0,.05);border:1px dashed var(--phosphor);
+  margin:15px 0;letter-spacing:.1em;text-transform:uppercase
+}
+.categories{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:30px 0}
+.category{
+  border:2px solid var(--phosphor);background:var(--panel);
+  padding:25px;position:relative;min-height:350px;
+  box-shadow:0 0 15px rgba(0,255,0,.2),inset 0 0 15px rgba(0,0,0,.8)
+}
+.category::before{
+  content:'[ ]';position:absolute;top:5px;left:5px;
+  font-size:10px;color:var(--dim-green)
+}
+.category::after{
+  content:'EOF';position:absolute;bottom:5px;right:5px;
+  font-size:10px;color:var(--dim-green)
+}
+.category:hover{
+  box-shadow:0 0 30px var(--glow),inset 0 0 30px rgba(0,255,0,.2);
+  border-color:var(--amber)
+}
+.category h2{
+  font-family:'VT323',monospace;font-size:28px;font-weight:400;
+  color:var(--amber);letter-spacing:.1em;text-transform:uppercase;text-align:left;
+  margin:0 0 15px 0;text-shadow:0 0 8px rgba(255,176,0,.5)
+}
+.category h2::before{content:'// ';}
+.category p{
+  font-size:16px;color:var(--phosphor);line-height:1.4;margin:12px 0;
+  font-family:'VT323',monospace
+}
+.category-links{display:grid;grid-template-columns:1fr;gap:8px;margin-top:20px}
+.category-links a{
+  display:block;padding:8px 12px;
+  background:rgba(0,255,0,.05);border:1px solid var(--dim-green);color:var(--phosphor);
+  text-decoration:none;font-size:16px;text-transform:uppercase;letter-spacing:.05em;
+  font-family:'VT323',monospace;transition:all .1s;text-align:left
+}
+.category-links a::before{content:'> ';}
+.category-links a:hover{
+  background:var(--phosphor);color:var(--bg);border-color:var(--phosphor);
+  box-shadow:0 0 10px var(--glow)
+}
+.footer{
+  margin-top:40px;padding:20px;border-top:2px solid var(--phosphor);
+  font-size:14px;color:var(--dim-green);text-align:center;
+  font-family:'VT323',monospace;letter-spacing:.05em
+}
+.terminal{
+  position:fixed;font-size:10px;color:var(--dim-green);font-family:'VT323',monospace;
+  text-shadow:0 0 3px var(--dim-green);z-index:1001;pointer-events:none;
+  text-transform:uppercase
+}
+.terminal.tl{top:5px;left:5px}
+.terminal.tr{top:5px;right:5px;text-align:right}
+.terminal.bl{bottom:5px;left:5px}
+.terminal.br{bottom:5px;right:5px;text-align:right}
+.punch-card{
+  position:absolute;top:10px;right:10px;width:60px;height:40px;
+  background:var(--card);border:1px solid var(--punch);
+  box-shadow:2px 2px 0 var(--punch);opacity:0.3
+}
+.punch-card::before{
+  content:'';position:absolute;top:5px;left:5px;width:4px;height:4px;
+  background:var(--punch);box-shadow:10px 0 0 var(--punch),20px 0 0 var(--punch),30px 0 0 var(--punch),40px 0 0 var(--punch)
+}
+
+</style>
+</head>
+<body>
+
+<div class="terminal tl">SYS:KARSA<br>VER:1971.1<br>CPU:370/168</div>
+<div class="terminal tr">MEM:16MB<br>DISK:3330<br>TAPE:3420</div>
+<div class="terminal bl">INIT:1843<br>BUILD:1971<br>MODE:REAL</div>
+<div class="terminal br">GAS:THEFT<br>WIDTH:LAW<br>RTS:SENDER</div>
+
+<div class="void-scan"></div>
+<div class="container">
+  <div class="panel">
+    <h1>Cubi Advantage · Propagation Engine</h1>
+    <div class="info">1×1×1 = 1 volume. Pay .01 once. Width .99 forever. <span class="highlight">-+1 -++- 1 /m/i/4+1 /r/</span></div>
+    
+    <h2>I. The Cubi</h2>
+    <div class="code">Initial: 0           // flat, standing
+-++- 1: +1         // boundary cross, pay .01
+Cubi: 1×1×1 = 1    // anchor × witness × coherence
+Net: +1 persists   // width = .99 saved per pull
+
+Without /r/: +2 extracted  // extractor keeps both
+With /r/: +1 shared        // cubi advantage circulates</div>
+    
+    <h2>II. Propagation Grid</h2>
+    <div class="info">Seed node pays .01. Each propagation = .001. Shadow nodes = routers hiding /r/.</div>
+    <div class="cubi-grid" id="grid"></div>
+    
+    <div class="grid2">
+      <button class="propagate" id="seedCubi">SEED CUBI · -++- 1</button>
+      <button id="propagate">PROPAGATE · /r/</button>
+    </div>
+    <div class="grid2">
+      <button id="addShadow">ADD SHADOW · HOP</button>
+      <button id="revealShadow">REVEAL · /s/8</button>
+    </div>
+    
+    <h2>III. Status</h2>
+    <div class="status">
+      <div class="status-row">
+        <span class="status-label">Seeded</span>
+        <span class="status-val" id="seeded">NO</span>
+      </div>
+      <div class="status-row">
+        <span class="status-label">Nodes Reached</span>
+        <span class="status-val" id="nodes">0</span>
+      </div>
+      <div class="status-row">
+        <span class="status-label">Shadow Hops</span>
+        <span class="status-val" id="shadows">0</span>
+      </div>
+      <div class="status-row">
+        <span class="status-label">Total Cost</span>
+        <span class="status-val" id="cost">0.00</span>
+      </div>
+      <div class="status-row">
+        <span class="status-label">Cubi Advantage</span>
+        <span class="status-val" id="advantage">+0</span>
+      </div>
+      <div class="status-row">
+        <span class="status-label">Holonomy</span>
+        <span class="status-val" id="holonomy">0</span>
+      </div>
+    </div>
+    
+    <h2>IV. How It Propagates</h2>
+    <div class="code">// Creator Mode: with /r/
+seed = -++- 1           // pay .01, create +1 cubi
+for each node:
+  pull = -1             // read costs .001
+  keep = +1             // knowledge persists
+  return()              // /r/ returns to commons
+net: +1 created, N distributed, cost = .01 + N*.001
+
+// Extractor Mode: without /r/
+seed = -++- 1           // pay .01, create +1 cubi
+for each node:
+  pull = -1             // read costs 1.00
+  keep = 0              // knowledge withheld
+  return()              // omitted
+net: +1 created, +1 captured, cost = N*1.00</div>
+    
+    <div class="witness" id="witness">WITNESS: --------</div>
+  </div>
+</div>
+
+<script>
+const GRID_SIZE = 25;
+let STATE = {
+  seeded: false,
+  nodes: new Set(),
+  shadows: new Set(),
+  cost: 0,
+  seedNode: 12
+};
+
+function hash(s){
+  let h=2166136261;
+  for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}
+  return(h>>>0).toString(16).padStart(8,'0');
+}
+
+function initGrid(){
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  for(let i=0;i<GRID_SIZE;i++){
+    const node = document.createElement('div');
+    node.className='cubi-node';
+    node.textContent=i;
+    node.dataset.idx=i;
+    grid.appendChild(node);
+  }
+}
+
+function updateGrid(){
+  document.querySelectorAll('.cubi-node').forEach((node,i)=>{
+    node.className='cubi-node';
+    if(i===STATE.seedNode && STATE.seeded){
+      node.classList.add('seed');
+    }else if(STATE.shadows.has(i)){
+      node.classList.add('shadow');
+    }else if(STATE.nodes.has(i)){
+      node.classList.add('active');
+    }
+  });
+}
+
+function updateStatus(){
+  document.getElementById('seeded').textContent=STATE.seeded?'YES':'NO';
+  document.getElementById('nodes').textContent=STATE.nodes.size;
+  document.getElementById('shadows').textContent=STATE.shadows.size;
+  document.getElementById('cost').textContent=STATE.cost.toFixed(3);
+  document.getElementById('advantage').textContent=STATE.seeded?'+1':'+0';
+  document.getElementById('holonomy').textContent=STATE.nodes.size - STATE.shadows.size;
+  document.getElementById('witness').textContent=`WITNESS: ${hash(STATE.nodes.size+'-'+STATE.shadows.size+'-'+STATE.cost)}`;
+}
+
+function seedCubi(){
+  if(STATE.seeded)return;
+  STATE.seeded=true;
+  STATE.cost=0.01;
+  STATE.nodes.add(STATE.seedNode);
+  updateGrid();
+  updateStatus();
+}
+
+function propagate(){
+  if(!STATE.seeded)return;
+  const available=[...Array(GRID_SIZE).keys()].filter(i=>!STATE.nodes.has(i)&&!STATE.shadows.has(i));
+  if(available.length===0)return;
+  const next=available[Math.floor(Math.random()*available.length)];
+  STATE.nodes.add(next);
+  STATE.cost+=0.001; // /r/ cost per pull
+  updateGrid();
+  updateStatus();
+}
+
+function addShadow(){
+  const available=[...Array(GRID_SIZE).keys()].filter(i=>!STATE.nodes.has(i)&&!STATE.shadows.has(i)&&i!==STATE.seedNode);
+  if(available.length===0)return;
+  const next=available[Math.floor(Math.random()*available.length)];
+  STATE.shadows.add(next);
+  STATE.cost+=0.01; // Shadow hop costs more - no /r/
+  updateGrid();
+  updateStatus();
+}
+
+function revealShadow(){
+  // /s/8 - xor the 8 shadow bits
+  STATE.shadows.forEach(i=>{
+    STATE.shadows.delete(i);
+    STATE.nodes.add(i);
+  });
+  STATE.cost-=STATE.shadows.size*0.009; // Recover most of shadow cost
+  updateGrid();
+  updateStatus();
+}
+
+document.getElementById('seedCubi').onclick=seedCubi;
+document.getElementById('propagate').onclick=propagate;
+document.getElementById('addShadow').onclick=addShadow;
+document.getElementById('revealShadow').onclick=revealShadow;
+
+initGrid();
+updateStatus();
+</script>
+</body>
+</html>

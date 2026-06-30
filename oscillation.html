@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Oscillation Sync · Karsa</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;600&family=Courier+Prime:wght@400;700&display=swap');
+:root{
+  --bg:#000000;--phosphor:#00ff00;--amber:#ffb000;--dim-green:#00aa00;
+  --card:#f5f5dc;--punch:#000000;--panel:rgba(0,0,0,.98);--border:#00ff00;
+  --glow:rgba(0,255,0,.4);--ink:#00ff00
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#000;color:var(--phosphor);overflow-x:hidden}
+body{
+  background:
+    repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,0,.03) 2px,rgba(0,255,0,.03) 4px),
+    radial-gradient(ellipse at center,rgba(0,255,0,.05),transparent 70%),
+    #000;
+  font-family:'VT323','Courier Prime',monospace;font-size:18px;line-height:1.2;
+  animation:crt-flicker 0.15s infinite
+}
+@keyframes crt-flicker{
+  0%{opacity:0.97}
+  50%{opacity:1}
+  100%{opacity:0.98}
+}
+.container{max-width:1200px;margin:0 auto;padding:20px;position:relative;z-index:10}
+.container::before{
+  content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.15),rgba(0,0,0,.15) 1px,transparent 1px,transparent 2px);
+  z-index:1000;animation:scan-lines 8s linear infinite
+}
+@keyframes scan-lines{to{transform:translateY(4px)}}
+.header{
+  border:2px solid var(--phosphor);background:var(--panel);
+  padding:20px;margin-bottom:20px;position:relative;
+  box-shadow:0 0 20px var(--glow),inset 0 0 20px rgba(0,255,0,.1)
+}
+.header::after{
+  content:'SYSTEM/370';position:absolute;top:5px;right:10px;
+  font-size:12px;color:var(--dim-green);font-family:'IBM Plex Mono',monospace
+}
+h1{
+  font-family:'VT323',monospace;font-size:48px;font-weight:400;
+  color:var(--phosphor);letter-spacing:.1em;text-align:center;margin:0;
+  text-shadow:0 0 10px var(--glow);text-transform:uppercase
+}
+h1::before{content:'> ';}
+h1::after{content:' _';animation:cursor-blink 1s infinite}
+@keyframes cursor-blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.subtitle{
+  font-family:'IBM Plex Mono',monospace;font-size:14px;
+  color:var(--amber);text-align:center;margin:10px 0;letter-spacing:.2em;text-transform:uppercase;
+  text-shadow:0 0 5px rgba(255,176,0,.5)
+}
+.tagline{
+  font-family:'VT323',monospace;font-size:16px;color:var(--dim-green);
+  text-align:center;margin:10px 0;letter-spacing:.1em
+}
+.law{
+  font-size:14px;color:var(--phosphor);font-family:'IBM Plex Mono',monospace;
+  text-align:center;padding:12px;background:rgba(0,255,0,.05);border:1px dashed var(--phosphor);
+  margin:15px 0;letter-spacing:.1em;text-transform:uppercase
+}
+.categories{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:30px 0}
+.category{
+  border:2px solid var(--phosphor);background:var(--panel);
+  padding:25px;position:relative;min-height:350px;
+  box-shadow:0 0 15px rgba(0,255,0,.2),inset 0 0 15px rgba(0,0,0,.8)
+}
+.category::before{
+  content:'[ ]';position:absolute;top:5px;left:5px;
+  font-size:10px;color:var(--dim-green)
+}
+.category::after{
+  content:'EOF';position:absolute;bottom:5px;right:5px;
+  font-size:10px;color:var(--dim-green)
+}
+.category:hover{
+  box-shadow:0 0 30px var(--glow),inset 0 0 30px rgba(0,255,0,.2);
+  border-color:var(--amber)
+}
+.category h2{
+  font-family:'VT323',monospace;font-size:28px;font-weight:400;
+  color:var(--amber);letter-spacing:.1em;text-transform:uppercase;text-align:left;
+  margin:0 0 15px 0;text-shadow:0 0 8px rgba(255,176,0,.5)
+}
+.category h2::before{content:'// ';}
+.category p{
+  font-size:16px;color:var(--phosphor);line-height:1.4;margin:12px 0;
+  font-family:'VT323',monospace
+}
+.category-links{display:grid;grid-template-columns:1fr;gap:8px;margin-top:20px}
+.category-links a{
+  display:block;padding:8px 12px;
+  background:rgba(0,255,0,.05);border:1px solid var(--dim-green);color:var(--phosphor);
+  text-decoration:none;font-size:16px;text-transform:uppercase;letter-spacing:.05em;
+  font-family:'VT323',monospace;transition:all .1s;text-align:left
+}
+.category-links a::before{content:'> ';}
+.category-links a:hover{
+  background:var(--phosphor);color:var(--bg);border-color:var(--phosphor);
+  box-shadow:0 0 10px var(--glow)
+}
+.footer{
+  margin-top:40px;padding:20px;border-top:2px solid var(--phosphor);
+  font-size:14px;color:var(--dim-green);text-align:center;
+  font-family:'VT323',monospace;letter-spacing:.05em
+}
+.terminal{
+  position:fixed;font-size:10px;color:var(--dim-green);font-family:'VT323',monospace;
+  text-shadow:0 0 3px var(--dim-green);z-index:1001;pointer-events:none;
+  text-transform:uppercase
+}
+.terminal.tl{top:5px;left:5px}
+.terminal.tr{top:5px;right:5px;text-align:right}
+.terminal.bl{bottom:5px;left:5px}
+.terminal.br{bottom:5px;right:5px;text-align:right}
+.punch-card{
+  position:absolute;top:10px;right:10px;width:60px;height:40px;
+  background:var(--card);border:1px solid var(--punch);
+  box-shadow:2px 2px 0 var(--punch);opacity:0.3
+}
+.punch-card::before{
+  content:'';position:absolute;top:5px;left:5px;width:4px;height:4px;
+  background:var(--punch);box-shadow:10px 0 0 var(--punch),20px 0 0 var(--punch),30px 0 0 var(--punch),40px 0 0 var(--punch)
+}
+
+</style>
+</head>
+<body>
+
+<div class="terminal tl">SYS:KARSA<br>VER:1971.1<br>CPU:370/168</div>
+<div class="terminal tr">MEM:16MB<br>DISK:3330<br>TAPE:3420</div>
+<div class="terminal bl">INIT:1843<br>BUILD:1971<br>MODE:REAL</div>
+<div class="terminal br">GAS:THEFT<br>WIDTH:LAW<br>RTS:SENDER</div>
+
+<div class="void-scan"></div>
+<div class="container">
+  <div class="panel">
+    <h1>OSCILLATION SYNC</h1>
+    <div class="subtitle">3 Sources · 3 Internets · 1 Signature · Pulse Sync</div>
+    
+    <div class="sources-grid">
+      <div class="source">
+        <h3>SOURCE A</h3>
+        <div class="source-status" id="statusA">STANDBY</div>
+        <div class="source-sig" id="sigA">SHA256: a7f3c891...</div>
+        <div class="source-internet">INTERNET: ARPANET</div>
+      </div>
+      <div class="source">
+        <h3>SOURCE B</h3>
+        <div class="source-status" id="statusB">STANDBY</div>
+        <div class="source-sig" id="sigB">SHA256: a7f3c891...</div>
+        <div class="source-internet">INTERNET: NSFNET</div>
+      </div>
+      <div class="source">
+        <h3>SOURCE C</h3>
+        <div class="source-status" id="statusC">STANDBY</div>
+        <div class="source-sig" id="sigC">SHA256: a7f3c891...</div>
+        <div class="source-internet">INTERNET: CLEARWEB</div>
+      </div>
+    </div>
+    
+    <div class="viz-container">
+      <canvas id="canvas"></canvas>
+    </div>
+    
+    <div class="controls">
+      <button class="primary" id="init">INIT SOURCES</button>
+      <button id="pulse">SEND PULSE</button>
+      <button id="sync">SYNC ALL</button>
+      <button id="verify">VERIFY SIG</button>
+    </div>
+    
+    <div class="readout">
+      <div class="readout-item">
+        <div class="readout-label">Sources</div>
+        <div class="readout-val" id="sources">3</div>
+      </div>
+      <div class="readout-item">
+        <div class="readout-label">Pulses</div>
+        <div class="readout-val" id="pulses">0</div>
+      </div>
+      <div class="readout-item">
+        <div class="readout-label">Sync</div>
+        <div class="readout-val" id="sync">0%</div>
+      </div>
+      <div class="readout-item">
+        <div class="readout-label">Lag</div>
+        <div class="readout-val" id="lag">0ms</div>
+      </div>
+      <div class="readout-item">
+        <div class="readout-label">Holonomy</div>
+        <div class="readout-val" id="holonomy">0</div>
+      </div>
+      <div class="readout-item">
+        <div class="readout-label">State</div>
+        <div class="readout-val" id="state">IDLE</div>
+      </div>
+    </div>
+    
+    <div class="law">3 SOURCES · 1 SIGNATURE · 0 HOLONOMY</div>
+    
+    <div class="pulse-timeline" id="timeline">
+      <div class="pulse-entry">
+        <span class="pulse-time">[INIT]</span>
+        <span class="pulse-source">SYSTEM</span>
+        <span class="pulse-data">Awaiting sources...</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+
+function resize(){
+  W = canvas.width = canvas.offsetWidth * devicePixelRatio;
+  H = canvas.height = canvas.offsetHeight * devicePixelRatio;
+}
+resize();
+window.addEventListener('resize', resize);
+
+let ENGINE = {
+  sources: 3,
+  pulses: 0,
+  sync: 0,
+  lag: 0,
+  holonomy: 0,
+  state: 'IDLE',
+  initialized: false,
+  syncing: false,
+  signature: 'a7f3c891d4e5f6a7b8c9d0e1f2a3b4c5',
+  pulses_data: []
+};
+
+let sources = [
+  {id: 'A', internet: 'ARPANET', x: W*0.2, y: H*0.5, color: '#ffd95a', phase: 0, active: false},
+  {id: 'B', internet: 'NSFNET', x: W*0.5, y: H*0.5, color: '#32e8ff', phase: 2*Math.PI/3, active: false},
+  {id: 'C', internet: 'CLEARWEB', x: W*0.8, y: H*0.5, color: '#e168ff', phase: 4*Math.PI/3, active: false}
+];
+
+let time = 0;
+
+function init(){
+  ENGINE.initialized = true;
+  ENGINE.state = 'READY';
+  sources.forEach(s => s.active = true);
+  
+  document.getElementById('statusA').textContent = 'ACTIVE';
+  document.getElementById('statusB').textContent = 'ACTIVE';
+  document.getElementById('statusC').textContent = 'ACTIVE';
+  
+  document.getElementById('sigA').textContent = 'SHA256: ' + ENGINE.signature.substring(0,16) + '...';
+  document.getElementById('sigB').textContent = 'SHA256: ' + ENGINE.signature.substring(0,16) + '...';
+  document.getElementById('sigC').textContent = 'SHA256: ' + ENGINE.signature.substring(0,16) + '...';
+  
+  addPulse('INIT', 'SYSTEM', 'All sources online. Signature verified.');
+  updateReadout();
+}
+
+function sendPulse(){
+  if(!ENGINE.initialized) return;
+  
+  ENGINE.pulses++;
+  ENGINE.state = 'PULSING';
+  
+  const source = sources[ENGINE.pulses % 3];
+  const pulseData = {
+    time: Date.now(),
+    source: source.id,
+    signature: ENGINE.signature,
+    sequence: ENGINE.pulses,
+    holonomy: 0
+  };
+  
+  ENGINE.pulses_data.push(pulseData);
+  
+  addPulse('PULSE', source.id, `Seq ${ENGINE.pulses} · Sig ${ENGINE.signature.substring(0,8)}...`);
+  
+  // Calculate sync
+  calculateSync();
+  updateReadout();
+  
+  setTimeout(() => {
+    ENGINE.state = 'SYNCED';
+    updateReadout();
+  }, 500);
+}
+
+function syncAll(){
+  if(!ENGINE.initialized) return;
+  
+  ENGINE.syncing = true;
+  ENGINE.state = 'SYNCING';
+  
+  // Send pulse from each source
+  for(let i = 0; i < 3; i++){
+    setTimeout(() => {
+      ENGINE.pulses++;
+      const source = sources[i];
+      addPulse('SYNC', source.id, `Broadcast ${ENGINE.pulses}`);
+      calculateSync();
+      updateReadout();
+    }, i * 100);
+  }
+  
+  setTimeout(() => {
+    ENGINE.syncing = false;
+    ENGINE.state = 'SYNCED';
+    ENGINE.sync = 100;
+    ENGINE.holonomy = 0;
+    ENGINE.lag = Math.floor(Math.random() * 5);
+    addPulse('SYNC', 'SYSTEM', 'All sources synchronized. Holonomy: 0');
+    updateReadout();
+  }, 500);
+}
+
+function verify(){
+  if(!ENGINE.initialized) return;
+  
+  // Verify all signatures match
+  const allMatch = sources.every(s => true); // Simulated
+  
+  if(allMatch){
+    ENGINE.state = 'VERIFIED';
+    addPulse('VERIFY', 'SYSTEM', 'Signature match across all 3 internets. ✓');
+  }else{
+    ENGINE.state = 'MISMATCH';
+    addPulse('VERIFY', 'SYSTEM', 'Signature mismatch detected!');
+  }
+  updateReadout();
+}
+
+function calculateSync(){
+  if(ENGINE.pulses_data.length < 3) return;
+  
+  // Check if last 3 pulses are from different sources
+  const last3 = ENGINE.pulses_data.slice(-3);
+  const uniqueSources = new Set(last3.map(p => p.source)).size;
+  
+  if(uniqueSources === 3){
+    ENGINE.sync = 100;
+    ENGINE.holonomy = 0;
+  }else{
+    ENGINE.sync = Math.floor((uniqueSources / 3) * 100);
+    ENGINE.holonomy = 3 - uniqueSources;
+  }
+}
+
+function addPulse(type, source, data){
+  const timeline = document.getElementById('timeline');
+  const entry = document.createElement('div');
+  entry.className = 'pulse-entry';
+  
+  const timestamp = new Date().toLocaleTimeString('en-US', {hour12: false});
+  entry.innerHTML = `
+    <span class="pulse-time">[${timestamp}]</span>
+    <span class="pulse-source">${type}:${source}</span>
+    <span class="pulse-data">${data}</span>
+  `;
+  
+  timeline.insertBefore(entry, timeline.firstChild);
+  
+  // Keep only last 20 entries
+  while(timeline.children.length > 20){
+    timeline.removeChild(timeline.lastChild);
+  }
+}
+
+function updateReadout(){
+  document.getElementById('sources').textContent = ENGINE.sources;
+  document.getElementById('pulses').textContent = ENGINE.pulses;
+  document.getElementById('sync').textContent = ENGINE.sync + '%';
+  document.getElementById('lag').textContent = ENGINE.lag + 'ms';
+  document.getElementById('holonomy').textContent = ENGINE.holonomy;
+  document.getElementById('state').textContent = ENGINE.state;
+}
+
+function draw(){
+  ctx.fillStyle = 'rgba(0,0,0,0.1)';
+  ctx.fillRect(0,0,W,H);
+  
+  time += 0.02;
+  
+  // Draw connections between sources
+  if(ENGINE.initialized){
+    ctx.strokeStyle = 'rgba(0,255,170,0.2)';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([5, 5]);
+    
+    // A → B
+    ctx.beginPath();
+    ctx.moveTo(sources[0].x, sources[0].y);
+    ctx.lineTo(sources[1].x, sources[1].y);
+    ctx.stroke();
+    
+    // B → C
+    ctx.beginPath();
+    ctx.moveTo(sources[1].x, sources[1].y);
+    ctx.lineTo(sources[2].x, sources[2].y);
+    ctx.stroke();
+    
+    // C → A
+    ctx.beginPath();
+    ctx.moveTo(sources[2].x, sources[2].y);
+    ctx.lineTo(sources[0].x, sources[0].y);
+    ctx.stroke();
+    
+    ctx.setLineDash([]);
+  }
+  
+  // Draw sources
+  sources.forEach((source, i) => {
+    const pulse = source.active ? 1 + Math.sin(time * 3 + source.phase) * 0.3 : 1;
+    const size = 30 * pulse;
+    
+    // Outer ring
+    ctx.strokeStyle = source.color;
+    ctx.lineWidth = 2;
+    ctx.shadowBlur = 20;
+    ctx.shadowColor = source.color;
+    ctx.beginPath();
+    ctx.arc(source.x, source.y, size + 10, 0, Math.PI * 2);
+    ctx.stroke();
+    
+    // Inner core
+    ctx.fillStyle = source.color;
+    ctx.beginPath();
+    ctx.arc(source.x, source.y, size, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Label
+    ctx.fillStyle = '#c9a961';
+    ctx.font = 'bold 16px "IM Fell English SC"';
+    ctx.textAlign = 'center';
+    ctx.fillText(source.id, source.x, source.y - size - 20);
+    
+    ctx.fillStyle = '#8b2f8b';
+    ctx.font = '10px "Courier Prime"';
+    ctx.fillText(source.internet, source.x, source.y + size + 25);
+    
+    ctx.shadowBlur = 0;
+  });
+  
+  // Draw pulse waves
+  if(ENGINE.state === 'PULSING' || ENGINE.state === 'SYNCING'){
+    const waveRadius = (time * 100) % 200;
+    ctx.strokeStyle = 'rgba(0,255,170,0.5)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(W/2, H/2, waveRadius, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+  
+  // Draw sync indicator
+  if(ENGINE.sync === 100){
+    ctx.fillStyle = '#00ffaa';
+    ctx.font = 'bold 24px "IM Fell English SC"';
+    ctx.textAlign = 'center';
+    ctx.fillText('SYNCED', W/2, 40);
+    
+    ctx.fillStyle = '#c9a961';
+    ctx.font = '14px "Courier Prime"';
+    ctx.fillText('42 = 0 = 1 = 1', W/2, 65);
+  }
+  
+  requestAnimationFrame(draw);
+}
+
+// Event listeners
+document.getElementById('init').onclick = init;
+document.getElementById('pulse').onclick = sendPulse;
+document.getElementById('sync').onclick = syncAll;
+document.getElementById('verify').onclick = verify;
+
+// Initialize
+updateReadout();
+draw();
+</script>
+</body>
+</html>

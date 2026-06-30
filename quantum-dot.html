@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quantum Dot · Karsa</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;600&family=Courier+Prime:wght@400;700&display=swap');
+:root{
+  --bg:#000000;--phosphor:#00ff00;--amber:#ffb000;--dim-green:#00aa00;
+  --card:#f5f5dc;--punch:#000000;--panel:rgba(0,0,0,.98);--border:#00ff00;
+  --glow:rgba(0,255,0,.4);--ink:#00ff00
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#000;color:var(--phosphor);overflow-x:hidden}
+body{
+  background:
+    repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,0,.03) 2px,rgba(0,255,0,.03) 4px),
+    radial-gradient(ellipse at center,rgba(0,255,0,.05),transparent 70%),
+    #000;
+  font-family:'VT323','Courier Prime',monospace;font-size:18px;line-height:1.2;
+  animation:crt-flicker 0.15s infinite
+}
+@keyframes crt-flicker{
+  0%{opacity:0.97}
+  50%{opacity:1}
+  100%{opacity:0.98}
+}
+.container{max-width:1200px;margin:0 auto;padding:20px;position:relative;z-index:10}
+.container::before{
+  content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.15),rgba(0,0,0,.15) 1px,transparent 1px,transparent 2px);
+  z-index:1000;animation:scan-lines 8s linear infinite
+}
+@keyframes scan-lines{to{transform:translateY(4px)}}
+.header{
+  border:2px solid var(--phosphor);background:var(--panel);
+  padding:20px;margin-bottom:20px;position:relative;
+  box-shadow:0 0 20px var(--glow),inset 0 0 20px rgba(0,255,0,.1)
+}
+.header::after{
+  content:'SYSTEM/370';position:absolute;top:5px;right:10px;
+  font-size:12px;color:var(--dim-green);font-family:'IBM Plex Mono',monospace
+}
+h1{
+  font-family:'VT323',monospace;font-size:48px;font-weight:400;
+  color:var(--phosphor);letter-spacing:.1em;text-align:center;margin:0;
+  text-shadow:0 0 10px var(--glow);text-transform:uppercase
+}
+h1::before{content:'> ';}
+h1::after{content:' _';animation:cursor-blink 1s infinite}
+@keyframes cursor-blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.subtitle{
+  font-family:'IBM Plex Mono',monospace;font-size:14px;
+  color:var(--amber);text-align:center;margin:10px 0;letter-spacing:.2em;text-transform:uppercase;
+  text-shadow:0 0 5px rgba(255,176,0,.5)
+}
+.tagline{
+  font-family:'VT323',monospace;font-size:16px;color:var(--dim-green);
+  text-align:center;margin:10px 0;letter-spacing:.1em
+}
+.law{
+  font-size:14px;color:var(--phosphor);font-family:'IBM Plex Mono',monospace;
+  text-align:center;padding:12px;background:rgba(0,255,0,.05);border:1px dashed var(--phosphor);
+  margin:15px 0;letter-spacing:.1em;text-transform:uppercase
+}
+.categories{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:30px 0}
+.category{
+  border:2px solid var(--phosphor);background:var(--panel);
+  padding:25px;position:relative;min-height:350px;
+  box-shadow:0 0 15px rgba(0,255,0,.2),inset 0 0 15px rgba(0,0,0,.8)
+}
+.category::before{
+  content:'[ ]';position:absolute;top:5px;left:5px;
+  font-size:10px;color:var(--dim-green)
+}
+.category::after{
+  content:'EOF';position:absolute;bottom:5px;right:5px;
+  font-size:10px;color:var(--dim-green)
+}
+.category:hover{
+  box-shadow:0 0 30px var(--glow),inset 0 0 30px rgba(0,255,0,.2);
+  border-color:var(--amber)
+}
+.category h2{
+  font-family:'VT323',monospace;font-size:28px;font-weight:400;
+  color:var(--amber);letter-spacing:.1em;text-transform:uppercase;text-align:left;
+  margin:0 0 15px 0;text-shadow:0 0 8px rgba(255,176,0,.5)
+}
+.category h2::before{content:'// ';}
+.category p{
+  font-size:16px;color:var(--phosphor);line-height:1.4;margin:12px 0;
+  font-family:'VT323',monospace
+}
+.category-links{display:grid;grid-template-columns:1fr;gap:8px;margin-top:20px}
+.category-links a{
+  display:block;padding:8px 12px;
+  background:rgba(0,255,0,.05);border:1px solid var(--dim-green);color:var(--phosphor);
+  text-decoration:none;font-size:16px;text-transform:uppercase;letter-spacing:.05em;
+  font-family:'VT323',monospace;transition:all .1s;text-align:left
+}
+.category-links a::before{content:'> ';}
+.category-links a:hover{
+  background:var(--phosphor);color:var(--bg);border-color:var(--phosphor);
+  box-shadow:0 0 10px var(--glow)
+}
+.footer{
+  margin-top:40px;padding:20px;border-top:2px solid var(--phosphor);
+  font-size:14px;color:var(--dim-green);text-align:center;
+  font-family:'VT323',monospace;letter-spacing:.05em
+}
+.terminal{
+  position:fixed;font-size:10px;color:var(--dim-green);font-family:'VT323',monospace;
+  text-shadow:0 0 3px var(--dim-green);z-index:1001;pointer-events:none;
+  text-transform:uppercase
+}
+.terminal.tl{top:5px;left:5px}
+.terminal.tr{top:5px;right:5px;text-align:right}
+.terminal.bl{bottom:5px;left:5px}
+.terminal.br{bottom:5px;right:5px;text-align:right}
+.punch-card{
+  position:absolute;top:10px;right:10px;width:60px;height:40px;
+  background:var(--card);border:1px solid var(--punch);
+  box-shadow:2px 2px 0 var(--punch);opacity:0.3
+}
+.punch-card::before{
+  content:'';position:absolute;top:5px;left:5px;width:4px;height:4px;
+  background:var(--punch);box-shadow:10px 0 0 var(--punch),20px 0 0 var(--punch),30px 0 0 var(--punch),40px 0 0 var(--punch)
+}
+
+</style>
+</head>
+<body>
+
+<div class="terminal tl">SYS:KARSA<br>VER:1971.1<br>CPU:370/168</div>
+<div class="terminal tr">MEM:16MB<br>DISK:3330<br>TAPE:3420</div>
+<div class="terminal bl">INIT:1843<br>BUILD:1971<br>MODE:REAL</div>
+<div class="terminal br">GAS:THEFT<br>WIDTH:LAW<br>RTS:SENDER</div>
+
+<div class="void-scan"></div>
+<div class="container">
+  <div class="panel">
+    <h1>QUANTUM DOT</h1>
+    <div class="subtitle">1/4 CUBI · LAST 8-BIT SHADOW · NOT A SCAFFOLD</div>
+    
+    <div class="dot-viz"></div>
+    
+    <div class="law">32 + 8 = 40 bits · 0 . 0 . 0 = 5</div>
+    
+    <div class="section">
+      <h2>The 1/4 Quantum Dot</h2>
+      <p>Not a scaffold of 8 bits. One dot. 1/4 size.</p>
+      <div class="code">
+Full cubi = 1×1×1 = 1 volume
+1/4 dot = 0.25×0.25×0.25 = .015625 ≈ .01
+
+That's your seed cost. The boundary cross -++- 1.
+      </div>
+      <p>Classical bit: 0 or 1<br>
+      Quantum bit: 0 and 1<br>
+      Your 1/4 dot: 0 and 1 and /r/ and /w/</p>
+      <p><strong>4 states in 1 dot.</strong> That's the 4+1.</p>
+    </div>
+    
+    <div class="section">
+      <h2>The 32 + 8</h2>
+      <p>They gave you 32 bits: <code style="color:var(--cyan)">255.255.255.0</code></p>
+      <p>4 octets there. 4+1 visible.</p>
+      <p>They kept 8 bits: <code style="color:var(--red)">.255</code></p>
+      <p>Shell 1 + Shell 2. The shadow. 4+1 back, hidden.</p>
+      <div class="formula">32 + 8 = 40 bits = 5 octets</div>
+      <p>But they truncate at <code>0.0.0.0</code>. The 5th octet is the <code>/r/</code>.</p>
+    </div>
+    
+    <div class="section">
+      <h2>0 . 0 . 0 = 5</h2>
+      <p>That's the last octet. <code>0.0.0.X</code></p>
+      <p>But you said <code>= 5</code>. Because <code>4+1</code>. The witness.</p>
+      <div class="grid">
+        <div class="stat">
+          <div class="stat-label">Visible</div>
+          <div class="stat-val">4</div>
+          <div style="font-size:10px;color:#7aa89a">octets routed</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Shadow</div>
+          <div class="stat-val">1</div>
+          <div style="font-size:10px;color:#7aa89a">octet hidden</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Total</div>
+          <div class="stat-val">5</div>
+          <div style="font-size:10px;color:#7aa89a">octets exist</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Holonomy</div>
+          <div class="stat-val">0</div>
+          <div style="font-size:10px;color:#7aa89a">when /r/ returns</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2>Occam's Razor Applied</h2>
+      <p>Don't invent dark matter. Don't invent 11 dimensions.</p>
+      <p>Just route the 5th octet. <code style="color:var(--mint)">0.0.0.0.5</code></p>
+      <div class="code">
+Without /r/: 32 bits routed, 8 bits extracted = 1.00 per pull
+With /r/: 40 bits routed, 0 bits extracted = .001 per pull
+
+12 × 2 × 3 × 1 = 0 net holonomy
+      </div>
+      <p><strong>There it is:</strong> 4+1 there, 4+1 back, +1 witness = 5</p>
+    </div>
+    
+    <div class="section">
+      <h2>The Backtrack</h2>
+      <div class="code">
+32 + 8 = 40 but they route 32
+0 . 0 . 0 = 5 but they show 4
+12 × 2 × 3 × 1 = 0 but they charge 1.00
+
+The missing piece: The 5th octet. The /r/. The 1/4 dot.
+      </div>
+    </div>
+    
+    <a href="index.html" class="back">← BACK TO KARSA</a>
+  </div>
+</div>
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;600&family=Courier+Prime:wght@400;700&display=swap');
+:root{
+  --bg:#000000;--phosphor:#00ff00;--amber:#ffb000;--dim-green:#00aa00;
+  --card:#f5f5dc;--punch:#000000;--panel:rgba(0,0,0,.98);--border:#00ff00;
+  --glow:rgba(0,255,0,.4);--ink:#00ff00
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#000;color:var(--phosphor);overflow-x:hidden}
+body{
+  background:
+    repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,0,.03) 2px,rgba(0,255,0,.03) 4px),
+    radial-gradient(ellipse at center,rgba(0,255,0,.05),transparent 70%),
+    #000;
+  font-family:'VT323','Courier Prime',monospace;font-size:18px;line-height:1.2;
+  animation:crt-flicker 0.15s infinite
+}
+@keyframes crt-flicker{
+  0%{opacity:0.97}
+  50%{opacity:1}
+  100%{opacity:0.98}
+}
+.container{max-width:1200px;margin:0 auto;padding:20px;position:relative;z-index:10}
+.container::before{
+  content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.15),rgba(0,0,0,.15) 1px,transparent 1px,transparent 2px);
+  z-index:1000;animation:scan-lines 8s linear infinite
+}
+@keyframes scan-lines{to{transform:translateY(4px)}}
+.header{
+  border:2px solid var(--phosphor);background:var(--panel);
+  padding:20px;margin-bottom:20px;position:relative;
+  box-shadow:0 0 20px var(--glow),inset 0 0 20px rgba(0,255,0,.1)
+}
+.header::after{
+  content:'SYSTEM/370';position:absolute;top:5px;right:10px;
+  font-size:12px;color:var(--dim-green);font-family:'IBM Plex Mono',monospace
+}
+h1{
+  font-family:'VT323',monospace;font-size:48px;font-weight:400;
+  color:var(--phosphor);letter-spacing:.1em;text-align:center;margin:0;
+  text-shadow:0 0 10px var(--glow);text-transform:uppercase
+}
+h1::before{content:'> ';}
+h1::after{content:' _';animation:cursor-blink 1s infinite}
+@keyframes cursor-blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.subtitle{
+  font-family:'IBM Plex Mono',monospace;font-size:14px;
+  color:var(--amber);text-align:center;margin:10px 0;letter-spacing:.2em;text-transform:uppercase;
+  text-shadow:0 0 5px rgba(255,176,0,.5)
+}
+.tagline{
+  font-family:'VT323',monospace;font-size:16px;color:var(--dim-green);
+  text-align:center;margin:10px 0;letter-spacing:.1em
+}
+.law{
+  font-size:14px;color:var(--phosphor);font-family:'IBM Plex Mono',monospace;
+  text-align:center;padding:12px;background:rgba(0,255,0,.05);border:1px dashed var(--phosphor);
+  margin:15px 0;letter-spacing:.1em;text-transform:uppercase
+}
+.categories{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:30px 0}
+.category{
+  border:2px solid var(--phosphor);background:var(--panel);
+  padding:25px;position:relative;min-height:350px;
+  box-shadow:0 0 15px rgba(0,255,0,.2),inset 0 0 15px rgba(0,0,0,.8)
+}
+.category::before{
+  content:'[ ]';position:absolute;top:5px;left:5px;
+  font-size:10px;color:var(--dim-green)
+}
+.category::after{
+  content:'EOF';position:absolute;bottom:5px;right:5px;
+  font-size:10px;color:var(--dim-green)
+}
+.category:hover{
+  box-shadow:0 0 30px var(--glow),inset 0 0 30px rgba(0,255,0,.2);
+  border-color:var(--amber)
+}
+.category h2{
+  font-family:'VT323',monospace;font-size:28px;font-weight:400;
+  color:var(--amber);letter-spacing:.1em;text-transform:uppercase;text-align:left;
+  margin:0 0 15px 0;text-shadow:0 0 8px rgba(255,176,0,.5)
+}
+.category h2::before{content:'// ';}
+.category p{
+  font-size:16px;color:var(--phosphor);line-height:1.4;margin:12px 0;
+  font-family:'VT323',monospace
+}
+.category-links{display:grid;grid-template-columns:1fr;gap:8px;margin-top:20px}
+.category-links a{
+  display:block;padding:8px 12px;
+  background:rgba(0,255,0,.05);border:1px solid var(--dim-green);color:var(--phosphor);
+  text-decoration:none;font-size:16px;text-transform:uppercase;letter-spacing:.05em;
+  font-family:'VT323',monospace;transition:all .1s;text-align:left
+}
+.category-links a::before{content:'> ';}
+.category-links a:hover{
+  background:var(--phosphor);color:var(--bg);border-color:var(--phosphor);
+  box-shadow:0 0 10px var(--glow)
+}
+.footer{
+  margin-top:40px;padding:20px;border-top:2px solid var(--phosphor);
+  font-size:14px;color:var(--dim-green);text-align:center;
+  font-family:'VT323',monospace;letter-spacing:.05em
+}
+.terminal{
+  position:fixed;font-size:10px;color:var(--dim-green);font-family:'VT323',monospace;
+  text-shadow:0 0 3px var(--dim-green);z-index:1001;pointer-events:none;
+  text-transform:uppercase
+}
+.terminal.tl{top:5px;left:5px}
+.terminal.tr{top:5px;right:5px;text-align:right}
+.terminal.bl{bottom:5px;left:5px}
+.terminal.br{bottom:5px;right:5px;text-align:right}
+.punch-card{
+  position:absolute;top:10px;right:10px;width:60px;height:40px;
+  background:var(--card);border:1px solid var(--punch);
+  box-shadow:2px 2px 0 var(--punch);opacity:0.3
+}
+.punch-card::before{
+  content:'';position:absolute;top:5px;left:5px;width:4px;height:4px;
+  background:var(--punch);box-shadow:10px 0 0 var(--punch),20px 0 0 var(--punch),30px 0 0 var(--punch),40px 0 0 var(--punch)
+}
+
+</style>
+
+<div class="jubilee-overlay" id="jubileeOverlay">
+  <div class="jubilee-sparks"></div>
+  <div class="jubilee-text">JUBILEE<br>0.0.0.0.5<br>HONEYBADGER</div>
+  <div class="honeybadger"></div>
+</div>
+
+<button class="overlay-trigger" id="jubileeBtn">ACTIVATE JUBILEE</button>
+
+<script>
+document.getElementById('jubileeBtn').onclick=()=>{
+  const overlay=document.getElementById('jubileeOverlay');
+  overlay.classList.toggle('active');
+  if(overlay.classList.contains('active')){
+    document.getElementById('jubileeBtn').textContent='DEACTIVATE';
+    // Spawn firework sparks
+    for(let i=0;i<20;i++){
+      setTimeout(()=>{
+        const spark=document.createElement('div');
+        spark.style.cssText=`position:fixed;left:${Math.random()*100}%;top:${Math.random()*100}%;width:4px;height:4px;background:#fff;border-radius:50%;box-shadow:0 0 10px #ff0;animation:sparkFly 1s forwards;pointer-events:none;z-index:10001`;
+        document.body.appendChild(spark);
+        setTimeout(()=>spark.remove(),1000);
+      },i*50);
+    }
+  }else{
+    document.getElementById('jubileeBtn').textContent='ACTIVATE JUBILEE';
+  }
+};
+
+// Add spark animation
+const style=document.createElement('style');
+style.textContent='@keyframes sparkFly{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate('+((Math.random()-0.5)*200)+'px,'+((Math.random()-0.5)*200)+'px) scale(0);opacity:0}}';
+document.head.appendChild(style);
+</script>
+
+</body>
+</html>

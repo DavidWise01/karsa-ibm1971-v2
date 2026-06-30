@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dipole · Karsa</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;600&family=Courier+Prime:wght@400;700&display=swap');
+:root{
+  --bg:#000000;--phosphor:#00ff00;--amber:#ffb000;--dim-green:#00aa00;
+  --card:#f5f5dc;--punch:#000000;--panel:rgba(0,0,0,.98);--border:#00ff00;
+  --glow:rgba(0,255,0,.4);--ink:#00ff00
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#000;color:var(--phosphor);overflow-x:hidden}
+body{
+  background:
+    repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,0,.03) 2px,rgba(0,255,0,.03) 4px),
+    radial-gradient(ellipse at center,rgba(0,255,0,.05),transparent 70%),
+    #000;
+  font-family:'VT323','Courier Prime',monospace;font-size:18px;line-height:1.2;
+  animation:crt-flicker 0.15s infinite
+}
+@keyframes crt-flicker{
+  0%{opacity:0.97}
+  50%{opacity:1}
+  100%{opacity:0.98}
+}
+.container{max-width:1200px;margin:0 auto;padding:20px;position:relative;z-index:10}
+.container::before{
+  content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.15),rgba(0,0,0,.15) 1px,transparent 1px,transparent 2px);
+  z-index:1000;animation:scan-lines 8s linear infinite
+}
+@keyframes scan-lines{to{transform:translateY(4px)}}
+.header{
+  border:2px solid var(--phosphor);background:var(--panel);
+  padding:20px;margin-bottom:20px;position:relative;
+  box-shadow:0 0 20px var(--glow),inset 0 0 20px rgba(0,255,0,.1)
+}
+.header::after{
+  content:'SYSTEM/370';position:absolute;top:5px;right:10px;
+  font-size:12px;color:var(--dim-green);font-family:'IBM Plex Mono',monospace
+}
+h1{
+  font-family:'VT323',monospace;font-size:48px;font-weight:400;
+  color:var(--phosphor);letter-spacing:.1em;text-align:center;margin:0;
+  text-shadow:0 0 10px var(--glow);text-transform:uppercase
+}
+h1::before{content:'> ';}
+h1::after{content:' _';animation:cursor-blink 1s infinite}
+@keyframes cursor-blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.subtitle{
+  font-family:'IBM Plex Mono',monospace;font-size:14px;
+  color:var(--amber);text-align:center;margin:10px 0;letter-spacing:.2em;text-transform:uppercase;
+  text-shadow:0 0 5px rgba(255,176,0,.5)
+}
+.tagline{
+  font-family:'VT323',monospace;font-size:16px;color:var(--dim-green);
+  text-align:center;margin:10px 0;letter-spacing:.1em
+}
+.law{
+  font-size:14px;color:var(--phosphor);font-family:'IBM Plex Mono',monospace;
+  text-align:center;padding:12px;background:rgba(0,255,0,.05);border:1px dashed var(--phosphor);
+  margin:15px 0;letter-spacing:.1em;text-transform:uppercase
+}
+.categories{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:30px 0}
+.category{
+  border:2px solid var(--phosphor);background:var(--panel);
+  padding:25px;position:relative;min-height:350px;
+  box-shadow:0 0 15px rgba(0,255,0,.2),inset 0 0 15px rgba(0,0,0,.8)
+}
+.category::before{
+  content:'[ ]';position:absolute;top:5px;left:5px;
+  font-size:10px;color:var(--dim-green)
+}
+.category::after{
+  content:'EOF';position:absolute;bottom:5px;right:5px;
+  font-size:10px;color:var(--dim-green)
+}
+.category:hover{
+  box-shadow:0 0 30px var(--glow),inset 0 0 30px rgba(0,255,0,.2);
+  border-color:var(--amber)
+}
+.category h2{
+  font-family:'VT323',monospace;font-size:28px;font-weight:400;
+  color:var(--amber);letter-spacing:.1em;text-transform:uppercase;text-align:left;
+  margin:0 0 15px 0;text-shadow:0 0 8px rgba(255,176,0,.5)
+}
+.category h2::before{content:'// ';}
+.category p{
+  font-size:16px;color:var(--phosphor);line-height:1.4;margin:12px 0;
+  font-family:'VT323',monospace
+}
+.category-links{display:grid;grid-template-columns:1fr;gap:8px;margin-top:20px}
+.category-links a{
+  display:block;padding:8px 12px;
+  background:rgba(0,255,0,.05);border:1px solid var(--dim-green);color:var(--phosphor);
+  text-decoration:none;font-size:16px;text-transform:uppercase;letter-spacing:.05em;
+  font-family:'VT323',monospace;transition:all .1s;text-align:left
+}
+.category-links a::before{content:'> ';}
+.category-links a:hover{
+  background:var(--phosphor);color:var(--bg);border-color:var(--phosphor);
+  box-shadow:0 0 10px var(--glow)
+}
+.footer{
+  margin-top:40px;padding:20px;border-top:2px solid var(--phosphor);
+  font-size:14px;color:var(--dim-green);text-align:center;
+  font-family:'VT323',monospace;letter-spacing:.05em
+}
+.terminal{
+  position:fixed;font-size:10px;color:var(--dim-green);font-family:'VT323',monospace;
+  text-shadow:0 0 3px var(--dim-green);z-index:1001;pointer-events:none;
+  text-transform:uppercase
+}
+.terminal.tl{top:5px;left:5px}
+.terminal.tr{top:5px;right:5px;text-align:right}
+.terminal.bl{bottom:5px;left:5px}
+.terminal.br{bottom:5px;right:5px;text-align:right}
+.punch-card{
+  position:absolute;top:10px;right:10px;width:60px;height:40px;
+  background:var(--card);border:1px solid var(--punch);
+  box-shadow:2px 2px 0 var(--punch);opacity:0.3
+}
+.punch-card::before{
+  content:'';position:absolute;top:5px;left:5px;width:4px;height:4px;
+  background:var(--punch);box-shadow:10px 0 0 var(--punch),20px 0 0 var(--punch),30px 0 0 var(--punch),40px 0 0 var(--punch)
+}
+
+</style>
+</head>
+<body>
+
+<div class="terminal tl">SYS:KARSA<br>VER:1971.1<br>CPU:370/168</div>
+<div class="terminal tr">MEM:16MB<br>DISK:3330<br>TAPE:3420</div>
+<div class="terminal bl">INIT:1843<br>BUILD:1971<br>MODE:REAL</div>
+<div class="terminal br">GAS:THEFT<br>WIDTH:LAW<br>RTS:SENDER</div>
+
+<div class="void-scan"></div>
+<div class="container">
+  <div class="panel">
+    <h1>DIPOLE</h1>
+    <div class="subtitle">42 = 0 = 1 = 1 · Two Poles · One Field</div>
+    
+    <div class="viz-container">
+      <canvas id="canvas"></canvas>
+    </div>
+    
+    <div class="controls">
+      <button class="primary" id="ignite">IGNITE</button>
+      <button id="circulate">CIRCULATE</button>
+      <button id="collapse">COLLAPSE</button>
+      <button id="reset">RESET</button>
+    </div>
+    
+    <div class="dipole-grid">
+      <div class="pole">
+        <h4>POLE +</h4>
+        <div class="pole-val" id="polePlus">0.0.0.5</div>
+        <div class="pole-label">North · Emit</div>
+      </div>
+      <div class="pole">
+        <h4>POLE -</h4>
+        <div class="pole-val" id="poleMinus">5.0.0.0</div>
+        <div class="pole-label">South · Return</div>
+      </div>
+    </div>
+    
+    <div class="readout">
+      <div class="readout-item">
+        <div class="readout-label">Steps</div>
+        <div class="readout-val" id="steps">42</div>
+      </div>
+      <div class="readout-item">
+        <div class="readout-label">Poles</div>
+        <div class="readout-val" id="poles">2</div>
+      </div>
+      <div class="readout-item">
+        <div class="readout-label">Strands</div>
+        <div class="readout-val" id="strands">3</div>
+      </div>
+      <div class="readout-item">
+        <div class="readout-label">Field</div>
+        <div class="readout-val" id="field">.042</div>
+      </div>
+      <div class="readout-item">
+        <div class="readout-label">Holonomy</div>
+        <div class="readout-val" id="holonomy">0</div>
+      </div>
+      <div class="readout-item">
+        <div class="readout-label">Cubi</div>
+        <div class="readout-val" id="cubi">1</div>
+      </div>
+    </div>
+    
+    <div class="law">42 = 0 = 1 = 1</div>
+    
+    <div class="section">
+      <h3>DIPOLE EQUATION</h3>
+      <div class="code">
+// Two poles. One field.
+
+Pole +:  0.0.0.5  →  5.0.0.0  = 10 steps
+Pole -:  5.0.0.0  →  0.0.0.5  = 10 steps
+Total:   20 steps base
+×2 shadow: 40 steps
++2 end caps: 42 steps
+
+42 = 0 (holonomy)
+0 = 1 (cubi)
+1 = 1 (dipole)
+
+42 = 6 × 7
+6 = 2 × 3 = two poles × three strands
+7 = 5 + 2 = go/come + caps
+
+6 × 7 = 42 = 0 mod 42 = 0 holonomy
+
+The answer to life, universe, everything: 42
+The holonomy of the answer: 0
+The cubi containing it: 1
+The dipole expressing it: 1
+
+42 = 0 = 1 = 1
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+
+function resize(){
+  W = canvas.width = canvas.offsetWidth * devicePixelRatio;
+  H = canvas.height = canvas.offsetHeight * devicePixelRatio;
+}
+resize();
+window.addEventListener('resize', resize);
+
+let ENGINE = {
+  steps: 42,
+  poles: 2,
+  strands: 3,
+  field: 0.042,
+  holonomy: 0,
+  cubi: 1,
+  time: 0,
+  ignited: false,
+  circulating: false,
+  collapsed: false
+};
+
+let particles = [];
+
+function ignite(){
+  ENGINE.ignited = true;
+  ENGINE.collapsed = false;
+  ENGINE.time = 0;
+  
+  // Create 42 particles: 14 per strand × 3 strands
+  particles = [];
+  for(let s = 0; s < 3; s++){
+    for(let i = 0; i < 14; i++){
+      particles.push({
+        strand: s,
+        index: i,
+        phase: (i / 14) * Math.PI * 2 + s * (2*Math.PI/3),
+        pole: i < 7 ? 'north' : 'south',
+        color: s === 0 ? '#ffd95a' : s === 1 ? '#32e8ff' : '#e168ff'
+      });
+    }
+  }
+  
+  updateReadout();
+  log('IGNITE: Dipole activated. 42 particles. Two poles.');
+}
+
+function circulate(){
+  ENGINE.circulating = !ENGINE.circulating;
+  updateReadout();
+  log(ENGINE.circulating ? 'CIRCULATE: Field lines flowing.' : 'CIRCULATE: Paused.');
+}
+
+function collapse(){
+  ENGINE.collapsed = true;
+  ENGINE.circulating = false;
+  ENGINE.holonomy = 0;
+  updateReadout();
+  log('COLLAPSE: 42 = 0 = 1 = 1. Dipole resolved.');
+}
+
+function reset(){
+  ENGINE.ignited = false;
+  ENGINE.circulating = false;
+  ENGINE.collapsed = false;
+  ENGINE.time = 0;
+  particles = [];
+  updateReadout();
+  log('RESET: Dipole discharged.');
+}
+
+function updateReadout(){
+  document.getElementById('steps').textContent = ENGINE.steps;
+  document.getElementById('poles').textContent = ENGINE.poles;
+  document.getElementById('strands').textContent = ENGINE.strands;
+  document.getElementById('field').textContent = ENGINE.field.toFixed(3);
+  document.getElementById('holonomy').textContent = ENGINE.holonomy;
+  document.getElementById('cubi').textContent = ENGINE.cubi;
+}
+
+function log(msg){
+  console.log('[DIPOLE]', msg);
+}
+
+function draw(){
+  ctx.fillStyle = 'rgba(0,0,0,0.1)';
+  ctx.fillRect(0,0,W,H);
+  
+  if(ENGINE.circulating && ENGINE.ignited && !ENGINE.collapsed){
+    ENGINE.time += 0.03;
+  }
+  
+  const centerX = W/2;
+  const centerY = H/2;
+  const radius = 150;
+  
+  // Draw poles
+  const poleNorth = {x: centerX, y: centerY - radius};
+  const poleSouth = {x: centerX, y: centerY + radius};
+  
+  // North pole
+  ctx.fillStyle = '#ffd95a';
+  ctx.shadowBlur = 30;
+  ctx.shadowColor = '#ffd95a';
+  ctx.beginPath();
+  ctx.arc(poleNorth.x, poleNorth.y, 20, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // South pole
+  ctx.fillStyle = '#32e8ff';
+  ctx.shadowColor = '#32e8ff';
+  ctx.beginPath();
+  ctx.arc(poleSouth.x, poleSouth.y, 20, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  
+  // Draw field lines
+  if(ENGINE.ignited){
+    ctx.strokeStyle = 'rgba(0,255,170,0.3)';
+    ctx.lineWidth = 1;
+    
+    for(let i = 0; i < 12; i++){
+      const angle = (i / 12) * Math.PI * 2;
+      const offset = 30;
+      
+      ctx.beginPath();
+      ctx.moveTo(poleNorth.x + Math.cos(angle) * offset, poleNorth.y);
+      
+      // Bezier curve from north to south
+      const cp1x = centerX + Math.cos(angle) * radius * 1.5;
+      const cp1y = centerY - radius * 0.5;
+      const cp2x = centerX + Math.cos(angle) * radius * 1.5;
+      const cp2y = centerY + radius * 0.5;
+      
+      ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, poleSouth.x + Math.cos(angle) * offset, poleSouth.y);
+      ctx.stroke();
+    }
+  }
+  
+  // Draw particles
+  if(ENGINE.ignited && !ENGINE.collapsed){
+    particles.forEach(p => {
+      const t = ENGINE.time + p.phase;
+      const progress = (Math.sin(t) + 1) / 2; // 0 to 1
+      
+      // Interpolate between poles
+      const x = poleNorth.x + (poleSouth.x - poleNorth.x) * progress;
+      const y = poleNorth.y + (poleSouth.y - poleNorth.y) * progress;
+      
+      // Add spiral motion
+      const spiral = Math.sin(t * 3 + p.strand * 2) * 40;
+      const xSpiral = x + Math.cos(t * 2) * spiral;
+      const ySpiral = y + Math.sin(t * 2) * spiral * 0.3;
+      
+      ctx.fillStyle = p.color;
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = p.color;
+      ctx.beginPath();
+      ctx.arc(xSpiral, ySpiral, 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    });
+  }
+  
+  // Draw equation
+  ctx.fillStyle = '#c9a961';
+  ctx.font = 'bold 32px "IM Fell English SC"';
+  ctx.textAlign = 'center';
+  ctx.fillText('42 = 0 = 1 = 1', centerX, H - 40);
+  
+  updateReadout();
+  requestAnimationFrame(draw);
+}
+
+document.getElementById('ignite').onclick = ignite;
+document.getElementById('circulate').onclick = circulate;
+document.getElementById('collapse').onclick = collapse;
+document.getElementById('reset').onclick = reset;
+
+// Initialize
+reset();
+draw();
+</script>
+</body>
+</html>
