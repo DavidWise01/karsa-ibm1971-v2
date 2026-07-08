@@ -4,6 +4,6 @@ slug  : karsa-ibm1971-v2
 seal  : c640dce0eb4def9232e34007f855af17c632132a0fbc9d83f462dbbbd26ce202
 prev  : 7153d7ccbc8ec858438eb5d0829b9bb88016bdf01c2f0df5acd0c39401e31935
 link  : cdc6be6a5bede3c7f69a3669a4f9df1c780df63f7c99dadebcc2570dc8bb6de9
-head  : 3447d3a0533aaf1e29a8bdc67a9774884fb3ae9dbc8a17064b7a008ca3c4ec90
+head  : 13f9ace173ef2e60af38912ba329b4afcb5a38b84a0e4495e8d30327f8c99cc2
 
 — the tether: link = sha256(index|slug|seal|prev). the chain head commits to the whole corpus.
